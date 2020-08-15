@@ -84,7 +84,7 @@ struct ContentView: View {
                             if playerCard.rank > cpuCard.rank {
                                 self.playerScore += 1
                             } else if cpuCard.rank == playerCard.rank {
-                                print("war!")
+                                AudioPlayer().playSound(sound: .battleSpeech)
                             } else {
                                 self.cpuScore += 1
                             }
