@@ -20,10 +20,12 @@ Summary: returns game image names
 #### `static func cardImage(CardRankToNum)`
 Summary: returns card image names
 
-Usage: 
+Usage:
+
 In `ContentView`:
-  `randomCard()` uses a random number to get a random card and convert it to a card name. It returns the rawValue and cardName in a tuple
-  in the `body`, the logo and background use the image function
+
+  * `randomCard()` uses a random number to get a random card and convert it to a card name. It returns the rawValue and cardName in a tuple  
+  * in the `body`, the logo and background use the image function
 
 
 
