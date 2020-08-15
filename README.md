@@ -1,5 +1,5 @@
-# war-card-game
-#### `War` Card Game in SwiftUI
+# War Card Game
+#### War Card Game in SwiftUI
 
 
 ## Extensions:
