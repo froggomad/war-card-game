@@ -10,7 +10,8 @@ import AVFoundation
 
 class AudioPlayer {
 
-    var player: AVAudioPlayer?
+    var speechPlayer: AVAudioPlayer?
+    var fightPlayer: AVAudioPlayer?
 
     enum FileType: String {
         case wav
@@ -34,10 +35,22 @@ class AudioPlayer {
         }
 
         do {
-            player = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: filePath))
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+            if sound == .battleSpeech {
+                speechPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: filePath), fileTypeHint: fileExtension.rawValue)
+
+                speechPlayer?.prepareToPlay()
+                speechPlayer?.play()
+            } else if sound == .fight {
+                fightPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: filePath), fileTypeHint: fileExtension.rawValue)
+                fightPlayer?.prepareToPlay()
+                fightPlayer?.play()
+            }
+
+
         } catch {
             print("Error playing audio file \(sound.rawValue).\(String(describing: sounds[sound])): \(error)")
         }
-        player?.play()
     }
 }

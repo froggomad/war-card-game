@@ -19,6 +19,7 @@ struct ContentView: View {
     @State private var playerScore: Int = 0
     @State private var cpuScore: Int = 0
     @State private var showCards = false
+    @State private var player: AudioPlayer?
 
     func randomCard() -> (image: String, rank: Int) {
         let randomNumber = Int.random(in: String.CardRankToNum.allCases[0].rawValue...String.CardRankToNum.allCases.count)
@@ -84,7 +85,9 @@ struct ContentView: View {
                             if playerCard.rank > cpuCard.rank {
                                 self.playerScore += 1
                             } else if cpuCard.rank == playerCard.rank {
-                                AudioPlayer().playSound(sound: .battleSpeech)
+                                self.player = AudioPlayer()
+                                self.player?.playSound(sound: .battleSpeech)
+                                self.player?.playSound(sound: .fight)
                             } else {
                                 self.cpuScore += 1
                             }
