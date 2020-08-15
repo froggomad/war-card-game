@@ -17,7 +17,7 @@ Summary: game images are stored here
 #### `static func image(CardImage)`
 Summary: returns game image names
 
-#### `static func cardImage(CardRankToNum`
+#### `static func cardImage(CardRankToNum)`
 Summary: returns card image names
 
 Usage: 
