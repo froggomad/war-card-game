@@ -6,7 +6,7 @@
 
 ### String+Named.swift
 
-contains image names stored in tuples with methods to return them as a usable value
+contains image names stored in enums with methods to return them as a usable value
 
 #### `enum CardRankToNum`
 Summary: case names are friendly card names (two through Ace) | Rawvalue type Int | Conforms to CaseIterable
