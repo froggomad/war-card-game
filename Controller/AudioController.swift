@@ -17,15 +17,22 @@ class AudioPlayer {
     enum Sound: String {
         case fight
         case battleSpeech
+        case coinWin
+        case coinLoss
+        case coinDrop
     }
 
     // MARK: - Properties -
     let sounds: [Sound: FileType] = [
         .fight: .wav,
-        .battleSpeech: .wav
+        .battleSpeech: .wav,
+        .coinWin: .wav,
+        .coinLoss: .wav,
+        .coinDrop: .wav
     ]
 
     // MARK: - Players -
+    var player: AVAudioPlayer?
     var speechPlayer: AVAudioPlayer?
     var fightPlayer: AVAudioPlayer?
 
@@ -54,6 +61,9 @@ class AudioPlayer {
             } else if sound == .fight {
                 fightPlayer = player
                 fightPlayer?.play()
+            } else {
+                self.player = player
+                self.player?.play()
             }
 
         } catch {

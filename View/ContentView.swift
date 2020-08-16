@@ -8,18 +8,14 @@
 
 import SwiftUI
 
-enum CardChoice: Int {
-    case card1 = 1
-    case card2
-}
-
 struct ContentView: View {
+    // MARK: - State Properties -
     @State private var randCard1: String = "card2"
     @State private var randCard2: String = "card2"
     @State private var playerScore: Int = 0
     @State private var cpuScore: Int = 0
     @State private var showCards = false
-    @State private var player: AudioPlayer?
+    @State private var player: AudioPlayer = AudioPlayer()
 
     func randomCard() -> (image: String, rank: Int) {
         let randomNumber = Int.random(in: String.CardRankToNum.allCases[0].rawValue...String.CardRankToNum.allCases.count)
@@ -76,10 +72,8 @@ struct ContentView: View {
 
                         if self.showCards {
                             let playerCard = self.randomCard()
-                            print("player rank: \(playerCard.rank)")
 
                             let cpuCard = self.randomCard()
-                            print("CPU rank: \(cpuCard.rank)")
                             
                             self.randCard1 = playerCard.image
                             self.randCard2 = cpuCard.image
@@ -88,14 +82,17 @@ struct ContentView: View {
                             if playerCard.rank > cpuCard.rank {
                                 self.playerScore += 1
                                 self.haptic(.light).impactOccurred()
+                                self.player.playSound(sound: .coinWin)
+
                             } else if cpuCard.rank == playerCard.rank {
                                 self.haptic(.heavy).impactOccurred()
-                                self.player = AudioPlayer()
-                                self.player?.playSound(sound: .battleSpeech)
-                                self.player?.playSound(sound: .fight)
+                                self.player.playSound(sound: .battleSpeech)
+                                self.player.playSound(sound: .fight)
+
                             } else {
                                 self.haptic(.medium).impactOccurred()
                                 self.cpuScore += 1
+                                self.player.playSound(sound: .coinLoss)
                             }
                         }
                     }
@@ -111,23 +108,27 @@ struct ContentView: View {
                     VStack {
                         Text("Player")
                             .bold()
+                            .font(.headline)
                             .padding(.bottom, 20)
                         Text("\(self.playerScore)")
+                            .font(.headline)
                     }
                     .padding(.leading, 20)
                     .foregroundColor(.white)
                     Spacer()
                     VStack {
-                        Text("CPU")
+                        Text("Opponent")
                             .bold()
+                            .font(.headline)
                             .padding(.bottom, 20)
                         Text("\(self.cpuScore)")
+                        .font(.headline)
                     }
                     .padding(.trailing, 20)
                     .foregroundColor(.white)
 
                 }
-                .padding(.bottom, 20)
+                .padding(.bottom, 8)
             }
         }
         
