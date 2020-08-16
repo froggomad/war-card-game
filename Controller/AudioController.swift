@@ -9,10 +9,7 @@
 import AVFoundation
 
 class AudioPlayer {
-
-    var speechPlayer: AVAudioPlayer?
-    var fightPlayer: AVAudioPlayer?
-
+    // MARK: - Types -
     enum FileType: String {
         case wav
     }
@@ -22,32 +19,42 @@ class AudioPlayer {
         case battleSpeech
     }
 
+    // MARK: - Properties -
     let sounds: [Sound: FileType] = [
         .fight: .wav,
         .battleSpeech: .wav
     ]
 
+    // MARK: - Players -
+    var speechPlayer: AVAudioPlayer?
+    var fightPlayer: AVAudioPlayer?
+
     func playSound(sound: Sound) {
+
         guard let fileExtension = sounds[sound],
             let filePath = Bundle.main.path(forResource: sound.rawValue, ofType: fileExtension.rawValue) else {
+
                 print("invalid file path or type for \(sound.rawValue).\(String(describing: sounds[sound]?.rawValue))")
                 return
         }
 
         do {
+            // setup audio session
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
             try AVAudioSession.sharedInstance().setActive(true)
-            if sound == .battleSpeech {
-                speechPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: filePath), fileTypeHint: fileExtension.rawValue)
+            // setup player
+            let player = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: filePath), fileTypeHint: fileExtension.rawValue)
+            player.prepareToPlay()
 
-                speechPlayer?.prepareToPlay()
+            // assign player
+            // TODO: Research playing multiple sounds at once - might be a cleaner way
+            if sound == .battleSpeech {
+                speechPlayer = player
                 speechPlayer?.play()
             } else if sound == .fight {
-                fightPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: filePath), fileTypeHint: fileExtension.rawValue)
-                fightPlayer?.prepareToPlay()
+                fightPlayer = player
                 fightPlayer?.play()
             }
-
 
         } catch {
             print("Error playing audio file \(sound.rawValue).\(String(describing: sounds[sound])): \(error)")
