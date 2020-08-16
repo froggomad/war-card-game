@@ -29,6 +29,10 @@ struct ContentView: View {
         return (String.cardImage(card), randomNumber)
     }
 
+    func haptic(_ feedbackPressure: UIImpactFeedbackGenerator.FeedbackStyle) -> UIImpactFeedbackGenerator {
+        return UIImpactFeedbackGenerator(style: feedbackPressure)
+    }
+
 
     var body: some View {
 
@@ -67,7 +71,6 @@ struct ContentView: View {
 
 
                 Button(action: {
-
                     withAnimation(.easeInOut(duration: 2)) {
                         self.showCards.toggle()
 
@@ -84,11 +87,14 @@ struct ContentView: View {
                             //Scoring
                             if playerCard.rank > cpuCard.rank {
                                 self.playerScore += 1
+                                self.haptic(.light).impactOccurred()
                             } else if cpuCard.rank == playerCard.rank {
+                                self.haptic(.heavy).impactOccurred()
                                 self.player = AudioPlayer()
                                 self.player?.playSound(sound: .battleSpeech)
                                 self.player?.playSound(sound: .fight)
                             } else {
+                                self.haptic(.medium).impactOccurred()
                                 self.cpuScore += 1
                             }
                         }
@@ -133,4 +139,3 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-
